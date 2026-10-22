@@ -1,4 +1,4 @@
-# Task 1: Data Cleaning, Feature Engineering and Statistical Aggregation
+# Data Cleaning, Feature Engineering and Statistical Aggregation
 
 from pathlib import Path
 
@@ -15,7 +15,7 @@ def main():
     df = pd.read_csv(input_file)
     original_rows = len(df)
 
-    # Use the existing AC/DC categories for this assignment's grouping.
+    # Use the existing AC/DC categories for charger grouping.
     # Remove any separate efficiency labels created by an earlier run.
     df = df.drop(columns=["Efficiency_Group"], errors="ignore")
 
@@ -65,8 +65,8 @@ def main():
     # Convert minutes to hours and calculate average charging power in kW.
     df["Power_kW"] = df["Energy_kWh"] / (df["Duration_Mins"] / 60)
 
-    # Assessment 2 defines peak hours as 12:00-17:00, unlike Assessment 1.
-    # Follow Assessment 1's overlap rule, using the supplied whole-hour start.
+    # Mark sessions overlapping the 12:00-17:00 peak period.
+    # Use the supplied whole-hour start and duration to calculate overlap.
     peak_start = 12
     peak_end = 17
     end_hour = df["Start_Hour"] + df["Duration_Mins"] / 60

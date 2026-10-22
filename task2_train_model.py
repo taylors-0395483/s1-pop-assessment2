@@ -1,4 +1,4 @@
-# Task 2: Model Training, Evaluation and Export
+# Model Training, Evaluation and Export
 
 from pathlib import Path
 
@@ -19,7 +19,7 @@ from sklearn.tree import DecisionTreeClassifier
 
 
 def main():
-    # Step 1: Load the Task 1 dataset to predict Grid_Status_Label.
+    # Step 1: Load the prepared dataset to predict Grid_Status_Label.
     folder = Path(__file__).resolve().parent
     df = pd.read_csv(folder / "0_ev_campus_dataset.csv")
 

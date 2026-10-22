@@ -1,4 +1,4 @@
-# Task 3: Interactive Streamlit Dashboard, Charts and Model Predictions
+# Interactive Streamlit Dashboard, Charts and Model Predictions
 
 from datetime import datetime
 import json
@@ -44,7 +44,7 @@ def log_change(event, **details):
 # Keep the prepared Chinese text beside the original English text.
 CHINESE = {
     "EV Campus Analytics": "校园电动汽车充电分析",
-    "Taylor's Smart Campus | Charging data, visual analysis and status predictions": "泰莱智慧校园｜充电数据、图表分析与状态预测",
+    "Smart Campus | Charging data, visual analysis and status predictions": "智慧校园｜充电数据、图表分析与状态预测",
     "Navigation": "页面导航",
     "Executive KPI Dashboard": "数据概览",
     "Visual Analytics Studio": "图表分析",
@@ -57,7 +57,7 @@ CHINESE = {
     "Not configured": "未设置",
     "Delta values compare the filtered selection with the full dataset, not a previous date.": "变化值表示筛选结果与全部数据的差额，不是与上一日期比较。",
     "How the estimates are calculated": "估算方法说明",
-    "Peak revenue is the sum of estimated session fees for sessions overlapping 12:00-17:00. Fees use Assessment 1 hourly tiers, rounded-up hours, fee caps, Staff and Student discounts, RM 5 peak surcharge and RM 15 idle surcharge when overstay is greater than zero.": "高峰收入是充电过程与 12:00–17:00 重叠的各次充电估算费用之和。采用 Assessment 1 的阶梯时薪、时长向上取整、费用上限及教职工和学生折扣，另计 RM 5 高峰附加费；超时停车大于零时加收 RM 15。",
+    "Peak revenue is the sum of estimated session fees for sessions overlapping 12:00-17:00. Fees use tiered hourly rates, rounded-up hours, fee caps, Staff and Student discounts, RM 5 peak surcharge and RM 15 idle surcharge when overstay is greater than zero.": "高峰收入是充电过程与 12:00–17:00 重叠的各次充电估算费用之和。采用阶梯时薪、时长向上取整、费用上限及教职工和学生折扣，另计 RM 5 高峰附加费；超时停车大于零时加收 RM 15。",
     "First-time waivers, Eco-Pass discounts and RFID replacement fees are excluded because their fields are unavailable. These estimates are not actual receipts.": "数据没有首次充电、Eco-Pass 和补卡记录，因此不计首次免费、Eco-Pass 折扣及补卡费。结果为估算费用，不是实际收款。",
     "Carbon savings = selected energy (kWh) multiplied by the net savings factor entered in the sidebar. No factor is assumed by default.": "碳减排量＝所选记录的充电量（kWh）× 侧栏输入的净减排系数。默认不设置系数。",
     "Filtered charging records": "筛选后的充电记录",
@@ -136,7 +136,7 @@ def display_data(df):
 
 
 def estimate_fee(row):
-    # Apply Assessment 1 rates to the fields available in the dataset.
+    # Apply tiered charging rates to the fields available in the dataset.
     hours = ceil(row["Duration_Mins"] / 60)
     if row["Charger_Type"] == "AC":
         rate_1, rate_2, rate_3, overtime_rate, fee_cap = 4, 6, 8, 12, 80
@@ -155,7 +155,7 @@ def estimate_fee(row):
     elif row["User_Type"] == "Student" and row["Charger_Type"] == "AC":
         gross_fee *= 0.75
 
-    # Use Assessment 2's peak flag; unknown waivers and fees are excluded.
+    # Use the calculated peak flag; unknown waivers and fees are excluded.
     peak_fee = 5 if row["Peak_Hour_Flag"] == 1 else 0
     idle_fee = 15 if row["Overstay_Mins"] > 0 else 0
     return round(gross_fee + peak_fee + idle_fee, 2)
@@ -184,13 +184,13 @@ def load_data():
 
 @st.cache_resource
 def load_model():
-    # Reuse the saved Task 2 model instead of retraining on page reruns.
+    # Reuse the saved model instead of retraining on page reruns.
     folder = Path(__file__).resolve().parent
     return joblib.load(folder / "task2_ev_model.pkl")
 
 
 def build_prediction_input(charger, user, start, duration, energy, overstay, temperature):
-    # Derive the same power and peak features used in Task 1.
+    # Derive the same power and peak features used in the data pipeline.
     if duration <= 0 or energy < 0 or overstay < 0 or not 0 <= start <= 23:
         raise ValueError("Check the charging duration, energy, overstay and start hour.")
     end_hour = start + duration / 60
@@ -233,7 +233,7 @@ def show_dashboard(df, filtered, carbon_factor):
     with st.expander(t("How the estimates are calculated")):
         st.write(t(
             "Peak revenue is the sum of estimated session fees for sessions overlapping "
-            "12:00-17:00. Fees use Assessment 1 hourly tiers, rounded-up hours, fee caps, "
+            "12:00-17:00. Fees use tiered hourly rates, rounded-up hours, fee caps, "
             "Staff and Student discounts, RM 5 peak surcharge and RM 15 idle surcharge "
             "when overstay is greater than zero."
         ))
@@ -399,7 +399,7 @@ def main():
                 st.session_state[key] = st.session_state[key]
         st.session_state["display_language"] = st.session_state["language"]
     st.title(t("EV Campus Analytics"))
-    st.caption(t("Taylor's Smart Campus | Charging data, visual analysis and status predictions"))
+    st.caption(t("Smart Campus | Charging data, visual analysis and status predictions"))
     # Prefer installed Chinese fonts so translated charts display readable glyphs.
     available_fonts = {font.name for font in font_manager.fontManager.ttflist}
     for font in ["PingFang SC", "Heiti SC", "Noto Sans CJK SC", "WenQuanYi Zen Hei"]:
