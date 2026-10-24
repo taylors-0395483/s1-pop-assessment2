@@ -10,11 +10,11 @@ The project extends an earlier charging-fee system into a workflow covering data
 
 | Module | Main functions |
 | --- | --- |
-| **Executive KPI Dashboard** | Total energy, average charging duration, estimated peak revenue, optional carbon savings, a filtered records table, and CSV download. |
-| **Visual Analytics Studio** | Energy versus battery temperature, AC/DC session distribution, and average energy during peak and off-peak periods. All three charts follow the selected filters. |
-| **Live ML Prediction** | A sidebar form predicts `Normal`, `Grid_Surge`, or `Overheated`, with a colour-coded result, calculated power, and peak/off-peak status. |
+| **Executive KPI Dashboard** | Four KPI cards, four overview charts, a horizontal filter bar, an interactive records table, and a real filtered CSV download. |
+| **Visual Analytics Studio** | Energy versus battery temperature, AC/DC session distribution, and average energy during peak and off-peak periods. Six detailed charts follow the selected filters, including battery temperature, charging power, and start-hour comparisons. |
+| **Live ML Prediction** | A two-column main-page form predicts `Normal`, `Grid_Surge`, or `Overheated`, with a colour-coded result, calculated power, and peak/off-peak status. |
 
-The dashboard and charts can be filtered by charger type, user type, charging period, and minimum energy. The top-right language selector switches the interface between English and Chinese. Downloads retain the original column names and category codes.
+The dashboard and charts can be filtered by charger type, user type, charging period, and minimum energy. English is the default display language. The top-right language selector switches between English and Chinese. Downloads retain the original column names and category codes.
 
 Optional settings accept a net carbon savings factor and a temperature alert threshold. No values are assumed by default. Operation logs beginning with `[TASK3]` record page changes, filters, chart rendering, download requests, and submitted predictions in the console or cloud logs.
 
@@ -52,17 +52,17 @@ The data is imbalanced: 898 `Normal`, 172 `Grid_Surge`, and 130 `Overheated` ses
 
 ### 3. Build and refine the web application
 
-The Streamlit app connects the prepared data and saved model to three sidebar pages. Data and model loading are cached; predictions reuse the saved model instead of retraining it on each page interaction.
+The Streamlit app connects the prepared data and saved model to three modules through a horizontal top navigation bar. There is no application sidebar. Data and model loading are cached; predictions reuse the saved model instead of retraining it on each page interaction.
 
-Development then added bilingual labels, filtered CSV downloads, optional analysis settings, and operation logs. Matplotlib's **Agg** backend resolved the macOS worker-thread plotting error. The app selects an available Chinese font for translated charts, and it supports both the Streamlit terminal command and PyCharm's normal **Run** action.
+Development added bilingual labels, filtered CSV downloads, optional analysis settings, and operation logs. The overview combines duration/energy scatter points, observed status proportions, session counts by start hour, and mean energy by charger. The start-hour chart marks the 12:00–17:00 peak period; the donut centre uses the selected display language. Prediction inputs and results appear side by side in the main page. Matplotlib's **Agg** backend resolved the macOS worker-thread plotting error. The app selects an available Chinese font for translated charts, and it supports both the Streamlit terminal command and PyCharm's normal **Run** action.
 
-Local checks covered both languages, three charts, filtering and empty selections, the download callback, model loading, and submitted predictions. These checks do not replace a complete test of the deployed application.
+Local checks cover both languages, four overview charts, six analytics charts, linked filters and tables, empty selections, the download callback, model loading, all three predicted classes, and the optional temperature-related overstay alert. These checks do not replace a complete test of the deployed application.
 
 ### 4. Publish to GitHub and deploy to the cloud
 
 The project was uploaded to the group's [GitHub repository](https://github.com/taylors-0395483/s1-pop-assessment2). Python dependencies were pinned to match the model environment, and `packages.txt` was added to install the **WenQuanYi Zen Hei** Chinese font on Linux.
 
-Deployment uses **Streamlit Community Cloud**, branch `main`, entry file `task3_app.py`, and Python **3.12**. The repository's GitHub organization required separate OAuth approval for Streamlit before deployment could proceed. After authorization, the application was deployed at the live link above.
+Deployment uses **Streamlit Community Cloud**, branch `main`, entry file `task3_app.py`, and Python **3.12**. The logo and official campus building photograph are committed under `assets/` and read relative to the app, with source details in [assets/README.md](assets/README.md). The banner is about 150 pixels tall. The repository's GitHub organization required separate OAuth approval for Streamlit before deployment could proceed. After authorization, the application was deployed at the live link above.
 
 The cloud runs the app using the included CSV and model; it does not execute the cleaning or training scripts at startup. Application code and dependency updates pushed to the deployment branch are picked up by Community Cloud. README updates document the project without changing its analysis or predictions.
 
@@ -81,6 +81,8 @@ The cloud runs the app using the included CSV and model; it does not execute the
 | `task3_app.py` | Bilingual dashboard, charts, and prediction interface. |
 | `requirements.txt` | Pinned Python dependencies. |
 | `packages.txt` | Linux font dependency for cloud charts. |
+| `.streamlit/config.toml` | Blue-and-white application theme. |
+| `assets/` | School logo, campus photograph, and image-source notes. |
 
 Numbered filename prefixes distinguish the data preparation, model training, and web application stages.
 
