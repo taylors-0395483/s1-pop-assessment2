@@ -56,7 +56,7 @@ The Streamlit app connects the prepared data and saved model to three modules th
 
 Development added bilingual labels, filtered CSV downloads, optional analysis settings, and operation logs. The overview combines duration/energy scatter points, observed status proportions, session counts by start hour, and mean energy by charger. The start-hour chart marks the 12:00–17:00 peak period; the donut centre uses the selected display language. Prediction inputs and results appear side by side in the main page. Matplotlib's **Agg** backend resolved the macOS worker-thread plotting error. The app selects an available Chinese font for translated charts, and it supports both the Streamlit terminal command and PyCharm's normal **Run** action.
 
-Local checks cover both languages, four overview charts, six analytics charts, linked filters and tables, empty selections, the download callback, model loading, all three predicted classes, and the optional temperature-related overstay alert. These checks do not replace a complete test of the deployed application.
+Local checks cover both languages, four overview charts, six analytics charts, linked filters and tables, empty selections, the download callback, model loading, all three predicted classes, and the optional temperature-related overstay alert. Cloud browser checks also cover the public entry page, translated filters, chart navigation, model prediction and an actual CSV download.
 
 ### 4. Publish to GitHub and deploy to the cloud
 
@@ -110,4 +110,4 @@ The data pipeline overwrites the working CSV, and the training script overwrites
 
 Peak revenue is an **estimate**, using tiered hourly rates, rounded-up charging hours, fee caps, Staff/Student discounts, a peak surcharge, and an overstay surcharge. It sums the estimated full-session fees for sessions that overlap the peak period. Fields for first-time waivers, Eco-Pass discounts, and RFID replacement fees are unavailable and are excluded. Carbon savings depend on the factor entered by the user; KPI deltas compare the filtered data with the full dataset, not a previous date.
 
-The core pipeline, model comparison, web interface, GitHub upload, and initial cloud deployment are in place. A full cloud feature check and the five-minute demonstration video remain to be completed.
+The core pipeline, model comparison, web interface, GitHub upload, and initial cloud deployment are in place. The redesigned cloud interface has been checked in a browser, including both languages, linked filters, chart navigation, prediction and CSV download. The five-minute demonstration video remains to be completed.

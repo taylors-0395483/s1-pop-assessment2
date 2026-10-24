@@ -51,4 +51,12 @@ The requested 150-pixel photo, native Streamlit widgets, optional settings, real
 - [x] Compare desktop and focused states; fix small-screen overflow.
 - [x] Preserve data, training outputs and calculation logic.
 
-Cloud verification is performed after this version is pushed to the deployment branch. The local evidence above does not claim cloud execution.
+## Cloud verification
+
+- Public URL: https://s1-pop-assessment2-jsdhilgeqw6duwytp6qvaf.streamlit.app/
+- Public entry screenshot: `/tmp/ev-campus-design/cloud-public-overview.png` (1280 × 720); default English, real logo/photo and new navigation visibly loaded in a fresh browser.
+- Six analytics charts and a real saved-model prediction were checked in the deployed application. Prediction screenshot: `/tmp/ev-campus-design/cloud-prediction.png`.
+- AC plus peak filtering returned 341 records; switching to Chinese retained that selection.
+- An actual CSV download contained 1,200 rows and 12 columns including the estimated fee; total energy matched 18,630.09 kWh.
+- Deployed application browser console: no error entries during functional checks.
+- One existing browser profile retained the platform loading shell after deployment; a fresh independent browser loaded the public URL successfully. The deployed app itself completed rendering and functional checks.
