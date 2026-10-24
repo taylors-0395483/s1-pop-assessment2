@@ -47,4 +47,12 @@ Earlier redesign fixes retained: selected-tab styling, proportional chart figure
 - [x] Keep filtering, translations, downloads and predictions working.
 - [x] Check desktop chart labels, colour consistency and peak annotations.
 
-This report records local verification of the current change. Cloud verification follows pushing to the deployment branch.
+## Cloud verification
+
+The public deployment was checked after pushing the change:
+
+- URL: https://s1-pop-assessment2-jsdhilgeqw6duwytp6qvaf.streamlit.app/
+- Overview shows the summary metrics, filters and records, without chart cards. Evidence: `/tmp/ev-campus-design/consolidated-overview-cloud.png`.
+- Analytics renders all eight different chart titles and cards. Evidence: `/tmp/ev-campus-design/consolidated-analytics-cloud.png`.
+- AC filtering produces 784 rows; AC plus peak produces 341 rows. Returning to overview retains the filter and shows 4,026.77 kWh, with only the records heading below the summary.
+- No browser console error entries appeared during these cloud checks.
