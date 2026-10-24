@@ -10,8 +10,8 @@ The project extends an earlier charging-fee system into a workflow covering data
 
 | Module | Main functions |
 | --- | --- |
-| **Executive KPI Dashboard** | Four KPI cards, four overview charts, a horizontal filter bar, an interactive records table, and a real filtered CSV download. |
-| **Visual Analytics Studio** | Energy versus battery temperature, AC/DC session distribution, and average energy during peak and off-peak periods. Six detailed charts follow the selected filters, including battery temperature, charging power, and start-hour comparisons. |
+| **Executive KPI Dashboard** | Four KPI cards, a horizontal filter bar, an interactive records table, and a filtered CSV download. Charts are grouped in Visual analytics. |
+| **Visual Analytics Studio** | Eight distinct charts in a two-column card layout: energy/temperature, duration/energy, observed status, average energy by charger, hourly sessions, charger counts, peak/off-peak energy, and power distribution. All follow the selected filters. |
 | **Live ML Prediction** | A two-column main-page form predicts `Normal`, `Grid_Surge`, or `Overheated`, with a colour-coded result, calculated power, and peak/off-peak status. |
 
 The dashboard and charts can be filtered by charger type, user type, charging period, and minimum energy. English is the default display language. The top-right language selector switches between English and Chinese. Downloads retain the original column names and category codes.
@@ -54,9 +54,9 @@ The data is imbalanced: 898 `Normal`, 172 `Grid_Surge`, and 130 `Overheated` ses
 
 The Streamlit app connects the prepared data and saved model to three modules through a horizontal top navigation bar. There is no application sidebar. Data and model loading are cached; predictions reuse the saved model instead of retraining it on each page interaction.
 
-Development added bilingual labels, filtered CSV downloads, optional analysis settings, and operation logs. The overview combines duration/energy scatter points, observed status proportions, session counts by start hour, and mean energy by charger. The start-hour chart marks the 12:00–17:00 peak period; the donut centre uses the selected display language. Prediction inputs and results appear side by side in the main page. Matplotlib's **Agg** backend resolved the macOS worker-thread plotting error. The app selects an available Chinese font for translated charts, and it supports both the Streamlit terminal command and PyCharm's normal **Run** action.
+Development added bilingual labels, filtered CSV downloads, optional analysis settings, and operation logs. The overview focuses on summary metrics and searchable records. All eight chart types appear once in Visual analytics, with consistent AC/DC colours, readable labels and paired detail/summary cards. The start-hour chart marks the 12:00–17:00 peak period; the donut centre uses the selected display language. Prediction inputs and results appear side by side in the main page. Matplotlib's **Agg** backend resolved the macOS worker-thread plotting error. The app selects an available Chinese font for translated charts, and it supports both the Streamlit terminal command and PyCharm's normal **Run** action.
 
-Local checks cover both languages, four overview charts, six analytics charts, linked filters and tables, empty selections, the download callback, model loading, all three predicted classes, and the optional temperature-related overstay alert. Cloud browser checks also cover the public entry page, translated filters, chart navigation, model prediction and an actual CSV download.
+Local checks cover both languages, a chart-free overview, eight distinct analytics charts, linked filters and tables, empty selections, the download callback, model loading, all three predicted classes, and the optional temperature-related overstay alert. Cloud browser checks also cover the public entry page, translated filters, chart navigation, model prediction and an actual CSV download.
 
 ### 4. Publish to GitHub and deploy to the cloud
 

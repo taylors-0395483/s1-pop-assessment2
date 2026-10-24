@@ -378,7 +378,7 @@ def draw_chart(filtered, kind, wide=True):
         for charger in ["AC", "DC"]:
             group = filtered[filtered["Charger_Type"] == charger]
             if not group.empty:
-                axis.scatter(group[x], group[y], s=13, alpha=0.55, color=CHARGER_COLORS[charger], label=t(charger))
+                axis.scatter(group[x], group[y], s=16, alpha=0.6, edgecolors="none", color=CHARGER_COLORS[charger], label=t(charger))
         axis.set_xlabel(t("Duration (min)") if kind == "duration" else t("Energy delivered (kWh)"))
         axis.set_ylabel(t("Energy delivered (kWh)") if kind == "duration" else t("Battery temperature (°C)"))
         axis.legend(frameon=False, loc="upper left", fontsize=9)
@@ -405,7 +405,7 @@ def draw_chart(filtered, kind, wide=True):
         axis.set_xlabel(t("Average energy per session (kWh)"))
     elif kind == "peak":
         means = filtered.groupby("Peak_Hour_Flag")["Energy_kWh"].mean()
-        axis.bar([t("Peak") if value else t("Off-peak") for value in means.index], means, color="#548acd", width=0.5)
+        axis.bar([t("Peak") if value else t("Off-peak") for value in means.index], means, color=["#155eef" if value else "#97b9f2" for value in means.index], width=0.5)
         for position, value in enumerate(means):
             axis.text(position, value, f"{value:.2f}", ha="center", va="bottom", fontsize=10)
         axis.set_ylim(0, max(float(means.max()) * 1.22, 1))
@@ -419,7 +419,7 @@ def draw_chart(filtered, kind, wide=True):
         axis.set_ylim(0, max(int(counts.max()) * 1.2, 1))
         axis.set_ylabel(t("Number of sessions"))
     elif kind == "power":
-        sns.boxplot(data=filtered, x="Charger_Type", y="Power_kW", order=["AC", "DC"], color="#b9d0f5", width=0.45, ax=axis)
+        sns.boxplot(data=filtered, x="Charger_Type", y="Power_kW", hue="Charger_Type", order=["AC", "DC"], palette=CHARGER_COLORS, legend=False, width=0.45, linewidth=1.1, fliersize=3, ax=axis)
         axis.set_xlabel(t("Charger type"))
         axis.set_ylabel(t("Charging power (kW)"))
     if kind != "status":
@@ -427,7 +427,7 @@ def draw_chart(filtered, kind, wide=True):
         axis.spines[["left", "bottom"]].set_color("#d4deeb")
         axis.tick_params(colors="#61738e", labelsize=9, length=0)
         axis.set_axisbelow(True)
-        axis.grid(axis="y", color="#edf1f7", linewidth=0.7)
+        axis.grid(axis="x" if kind == "mean_energy" else "y", color="#edf1f7", linewidth=0.7)
         axis.xaxis.label.set_color("#61738e")
         axis.yaxis.label.set_color("#61738e")
     figure.tight_layout(pad=1.0)
@@ -590,12 +590,15 @@ def main():
         log_change("HISTORICAL_TEMPERATURE_CHECK", threshold_C=temperature_limit, matched_overstays=len(risky))
         if not risky.empty:
             st.warning(t("{count} filtered sessions have an overstay at or above your temperature threshold.", count=len(risky)))
-    if page == "Executive KPI Dashboard":
-        charts = [("duration", "Duration and energy"), ("status", "Historical status distribution"), ("hours", "Sessions by start hour"), ("mean_energy", "Mean energy by charger")]
-        show_chart_grid(filtered, charts, "overview")
-    else:
+    if page == "Visual Analytics Studio":
         st.caption(t("All charts use the same {count:,} filtered sessions.", count=len(filtered)))
-        charts = [("temperature", "Energy and battery temperature"), ("duration", "Duration and energy"), ("peak", "Average energy: peak and off-peak"), ("counts", "Charger type distribution"), ("hours", "Sessions by start hour"), ("power", "Charging power distribution")]
+        # Keep each chart once, pairing detailed plots with compact summaries.
+        charts = [
+            ("temperature", "Energy and battery temperature"), ("status", "Historical status distribution"),
+            ("duration", "Duration and energy"), ("mean_energy", "Mean energy by charger"),
+            ("hours", "Sessions by start hour"), ("counts", "Charger type distribution"),
+            ("peak", "Average energy: peak and off-peak"), ("power", "Charging power distribution"),
+        ]
         show_chart_grid(filtered, charts, "analytics")
     show_records(df, filtered)
 

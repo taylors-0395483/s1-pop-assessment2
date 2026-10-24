@@ -2,61 +2,49 @@
 
 final result: passed
 
-## Evidence and state
+## Current scope and evidence
 
-- Source visual truth: `/tmp/ev-campus-design/selected-design.png` (selected blue-and-white design).
-- Desktop implementation: `/tmp/ev-campus-design/final-overview-zh.png`.
-- Combined comparison: `/tmp/ev-campus-design/design-comparison.png`.
-- Source and desktop implementation: 1374 × 1145 pixels; CSS viewport 1374 × 1145, density 1:1; no density resampling.
-- Comparison state: overview, Chinese, all 1,200 records. English remains the default for a new session.
-- Focused chart evidence: `/tmp/ev-campus-design/local-charts-zh.png`; prediction evidence: `/tmp/ev-campus-design/local-prediction.png`.
-- Small-screen evidence: `/tmp/ev-campus-design/mobile-overview-fixed.png`, CSS viewport 390 × 844.
-- Evidence files are local review captures, separate from runtime assets.
+The approved revision gives the overview a summary-and-records role and places every chart once in Visual analytics. It preserves the established blue-and-white theme, campus imagery, top navigation and prediction page.
 
-## Findings and fixes
+- Source visual truth: previous interface capture `/tmp/ev-campus-design/cloud-public-overview.png`, supplemented by the approved chart-consolidation requirement.
+- Current overview: `/tmp/ev-campus-design/consolidated-overview-local.png`.
+- Combined before/after comparison: `/tmp/ev-campus-design/consolidated-overview-comparison.png`.
+- Source/current captures both measure 1280 × 720 pixels at a 1280 × 720 CSS viewport, density 1:1; no resampling.
+- Compared state: English, overview, all 1,200 records.
+- Focused chart evidence: `/tmp/ev-campus-design/consolidated-analytics-local.png`, `/tmp/ev-campus-design/consolidated-analytics-middle.png`, `/tmp/ev-campus-design/consolidated-analytics-lower.png`.
+- Evidence captures are local review files, separate from runtime assets.
 
-1. [P2, resolved] Native radio circles weakened the top navigation. Styled the actual selected-tab element and retained keyboard-accessible native controls. The combined comparison shows the corrected underlined tabs.
-2. [P2, resolved] Right-column chart labels were too small. Matplotlib figure widths now follow the column widths. Focused chart evidence shows readable legends and values.
-3. [P2, resolved] Wide virtual-table content expanded the small-screen page. Clipped overflow at the records card; the main viewport and scroll width both measure 390 pixels after the fix. Table scrolling remains inside the table.
+## Findings
 
-No actionable P0/P1/P2 findings remain in the checked states.
+No actionable P0/P1/P2 visual differences remain in the checked desktop states. The intentional change replaces overview charts with the real records table immediately below the filter bar. Eight different charts now share the analytics page, without repeated chart types.
 
 ## Fidelity surfaces
 
-- Typography: native sans-serif interface, clear title/KPI hierarchy, installed Chinese chart fallback; translated labels and legends render without clipping on desktop.
-- Layout: white cards on pale blue, top navigation, four KPIs, horizontal desktop filters and two-column charts. Prediction inputs and results share the main page. Controls stack on small screens.
-- Colours: blue interaction states, green/blue AC/DC marks, and green/amber/red observed and predicted status colours.
-- Images: supplied original logo and official campus building/lake photograph; bundled files, correct subjects, sharp desktop banner crop.
-- Copy: Chinese donut uses “条记录”; the hourly chart includes the 12:00–17:00 peak legend and shading. Units and estimate explanations are visible.
+- Typography: retained sans-serif hierarchy, readable axis labels and legends, visible values on comparison bars; Chinese chart labels remain supported by installed font fallbacks.
+- Layout: retained banner, four KPI cards and horizontal filters; overview records now appear earlier. Analytics uses four rows of two cards, pairing detailed plots with compact summaries.
+- Colours: consistent green AC and blue DC across scatter, bar and box plots; peak bars use the same stronger blue as the hourly peak period. Observed status colours remain green, amber and red.
+- Images: original supplied school logo and official campus building/lake photograph remain unchanged, read from bundled relative paths.
+- Copy: clear titles, units and estimate explanations; Chinese donut uses “条记录”; 12:00–17:00 legend and shading remain on the hourly chart.
 
-## Intentional changes from the reference
+## Verification
 
-The requested 150-pixel photo, native Streamlit widgets, optional settings, real records table and working download replace the reference's static controls. Charts use actual filtered data. The table extends the page below the initial viewport. English is the initial language; Chinese was selected for the like-for-like visual comparison. Native fonts and component spacing are retained rather than reproducing every pixel of the static concept.
+- Overview: no plot cards; four metrics; actual records table and CSV download.
+- Analytics: eight unique charts, including energy/temperature, historical status, duration/energy, mean energy by charger, hourly sessions, charger counts, peak/off-peak energy and power distribution.
+- AC-only and DC-only subsets render without exceptions. AC plus peak gives 341 rows; returning to overview retains that selection and shows 4,026.77 kWh.
+- Chinese switching retains filter values and translated headings. Empty selections show an empty table and explanation.
+- Saved-model prediction still returns Normal for the default example. No data cleaning or model training was run.
+- Dataset, saved model and evaluation outputs match their previous Git versions byte for byte.
+- Local browser console: no error entries in the checked session. Transient Streamlit checks passed; no persistent test file added.
 
-## Functional verification
+## Comparison history
 
-- Default English, Chinese switch, stable translated choice values, no sidebar widgets.
-- All-record KPIs checked against 1,200 rows; linked AC/peak filter gives 341 rows in charts and table.
-- Four overview and six detailed charts, including battery temperature; empty filters show an empty table and explanation.
-- Prediction form, saved model, three possible classes, calculated power/peak flag, and configurable high-temperature overstay warning.
-- Download callback and original CSV column names; actual browser download is checked separately during cloud verification.
-- Original dataset, saved model and evaluation outputs match their previous Git versions byte for byte.
-- Browser console errors: none in the local checked session. Terminal checks passed; no persistent test script added.
+Earlier redesign fixes retained: selected-tab styling, proportional chart figure widths and records-card overflow containment. This revision resolves the duplicated placement of duration/energy and start-hour charts by placing all plots in one module. The combined overview comparison confirms unchanged branding/metrics/filters and the newly earlier records section. Focused analytics captures confirm chart appearance after consolidation.
 
-## Implementation checklist
+## Checklist
 
-- [x] Bundle logo/photo and use project-relative paths.
-- [x] Replace sidebar with horizontal navigation and main-page forms.
-- [x] Link actual filters, charts, records and CSV download.
-- [x] Compare desktop and focused states; fix small-screen overflow.
-- [x] Preserve data, training outputs and calculation logic.
+- [x] Remove plots from the overview.
+- [x] Retain eight distinct charts in the analysis module.
+- [x] Keep filtering, translations, downloads and predictions working.
+- [x] Check desktop chart labels, colour consistency and peak annotations.
 
-## Cloud verification
-
-- Public URL: https://s1-pop-assessment2-jsdhilgeqw6duwytp6qvaf.streamlit.app/
-- Public entry screenshot: `/tmp/ev-campus-design/cloud-public-overview.png` (1280 × 720); default English, real logo/photo and new navigation visibly loaded in a fresh browser.
-- Six analytics charts and a real saved-model prediction were checked in the deployed application. Prediction screenshot: `/tmp/ev-campus-design/cloud-prediction.png`.
-- AC plus peak filtering returned 341 records; switching to Chinese retained that selection.
-- An actual CSV download contained 1,200 rows and 12 columns including the estimated fee; total energy matched 18,630.09 kWh.
-- Deployed application browser console: no error entries during functional checks.
-- One existing browser profile retained the platform loading shell after deployment; a fresh independent browser loaded the public URL successfully. The deployed app itself completed rendering and functional checks.
+This report records local verification of the current change. Cloud verification follows pushing to the deployment branch.
