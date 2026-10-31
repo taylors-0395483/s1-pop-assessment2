@@ -1,6 +1,6 @@
 # EV Campus Analytics
 
-[Live application](https://s1-pop-assessment2-jsdhilgeqw6duwytp6qvaf.streamlit.app/) · [中文说明](README.zh-CN.md)
+[Live application](https://s1-pop-assessment2-jsdhilgeqw6duwytp6qvaf.streamlit.app/) · [Five-minute demo video](https://www.youtube.com/watch?v=lCWnAWD85V4) · [中文说明](README.zh-CN.md)
 
 EV Campus Analytics is a data analysis and machine learning application developed as a **collaborative learning project**. It uses a supplied dataset of 1,200 charging sessions to help campus facility engineers explore charging patterns, compare peak and off-peak usage, and estimate the operational status of a charging session.
 
@@ -110,4 +110,4 @@ The data pipeline overwrites the working CSV, and the training script overwrites
 
 Peak revenue is an **estimate**, using tiered hourly rates, rounded-up charging hours, fee caps, Staff/Student discounts, a peak surcharge, and an overstay surcharge. It sums the estimated full-session fees for sessions that overlap the peak period. Fields for first-time waivers, Eco-Pass discounts, and RFID replacement fees are unavailable and are excluded. Carbon savings depend on the factor entered by the user; KPI deltas compare the filtered data with the full dataset, not a previous date.
 
-The core pipeline, model comparison, web interface, GitHub upload, and initial cloud deployment are in place. The redesigned cloud interface has been checked in a browser, including both languages, linked filters, chart navigation, prediction and CSV download. The five-minute demonstration video remains to be completed.
+The core pipeline, model comparison, web interface, GitHub upload, and initial cloud deployment are in place. The redesigned cloud interface has been checked in a browser, including both languages, linked filters, chart navigation, prediction and CSV download. The five-minute demonstration video has been recorded and is linked at the top of this README.
